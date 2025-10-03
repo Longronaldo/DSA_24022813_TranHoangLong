@@ -12,6 +12,15 @@ class SLL {
 private:
     Node* head;
     int size = 0;
+
+    void printReverseHelper(Node* node) {
+        if (node == nullptr) {
+            cout << "nullptr" << " ";
+            return;
+        }
+        printReverseHelper(node->next);
+        cout << node->data << " ";
+    }
 public:
     SLL() : head(nullptr) {}
 
@@ -24,6 +33,14 @@ public:
         cout << "nullptr" << endl;
     }
 
+    ~SLL() {
+        Node* cur = head;
+        while (cur != nullptr) {
+            Node* temp = cur;
+            cur = cur->next;
+            delete temp;
+        }
+    }
     bool insertAt(int val, int pos) {
         if (pos < 0 || pos > size) return false;
 
@@ -70,13 +87,22 @@ public:
         return true;
     }
 
-    ~SLL() {
+    void printReverse() {
+        printReverseHelper(head);
+    }
+
+    void reverseLinkedList() {
+        Node* prev = nullptr;
         Node* cur = head;
+
         while (cur != nullptr) {
-            Node* temp = cur;
-            cur = cur->next;
-            delete temp;
+            Node* nextNode = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = nextNode;
         }
+
+        head = prev;
     }
 };
 
@@ -99,5 +125,11 @@ int main() {
     if (sll.deleteAt(8)) cout << "xoa duoc" << endl;
     else cout << "ko xoa duoc" << endl;
 
+    sll.print();
+    
+    sll.printReverse();
+    cout << endl;
+
+    sll.reverseLinkedList();
     sll.print();
 }
